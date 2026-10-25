@@ -8,7 +8,7 @@ from tests.conftest import FakeLLM
 
 
 def test_no_key_means_no_llm():
-    assert make_llm(None, "gemini-2.5-flash") is None
+    assert make_llm(None, "gemini-3.8-flash") is None
 
 
 def test_retries_then_fails_with_message():
