@@ -299,6 +299,11 @@ function Suggestions({ items, error, canEdit, lockText, onAccept, onDeclined }: 
       <div className="rkp-h"><h2 id="rkpT">위험 표현 사전 · 사람이 제안한 표현{waiting > 0 && <span className="st c-blue" style={{ marginLeft: 8 }}>확인 대기 {waiting}</span>}</h2>
         <span>검토 중 엔지니어가 찾은 특이 요구입니다. 규칙 담당이 반영하면 사전에 들어가 다음 검토부터 위험 조건으로 잡힙니다.</span></div>
       {items.length === 0 && <div className="rkp-r"><span className="c-grey">제안한 표현이 없습니다. 검토 상세 위험 조건 탭에서 제안합니다.</span></div>}
+      {items.length > 0 && (
+        <div className="rkp-r sg sg-h" aria-hidden="true">
+          <span>제안일</span><span>제안한 표현</span><span>제안한 곳</span><span>상태</span><span>처리</span>
+        </div>
+      )}
       {items.map((x) => {
         const [cls, st] = SUGGEST_STATUS[x.status]
         const where = x.locations[0] ? locationText(x.locations[0]) : '—'
@@ -307,22 +312,24 @@ function Suggestions({ items, error, canEdit, lockText, onAccept, onDeclined }: 
             <span className="mono">{day(x.suggested_at)}</span>
             <b title={x.note ?? undefined}>“{x.expression}”</b>
             <span><a href={`#/reviews/${x.run_id}`} title="위험 조건 탭에서 제안했습니다">{x.review_no}</a> · {where} · {x.suggested_by_name}{x.note ? ` · ${x.note}` : ''}</span>
-            {x.status === 'PENDING' ? (
-              declining === x.suggestion_id ? (
-                <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                  <input className="fi" value={why} onChange={(e) => setWhy(e.target.value)} aria-label="반려 사유" placeholder="반려 사유" />
-                  <button type="button" className="bo" disabled={busy || !why.trim()} onClick={() => decline(x.suggestion_id)}>반려</button>
-                  <button type="button" className="lnk" onClick={() => setDeclining(null)}>취소</button>
-                </span>
-              ) : (
-                <span style={{ display: 'flex', gap: 6, alignItems: 'center' }} title={canEdit ? undefined : lockText}>
-                  <span className={cls}>{st}</span>
-                  <button type="button" className="bo" disabled={!canEdit} onClick={() => onAccept(x)}>반영</button>
-                  <button type="button" className="bo" disabled={!canEdit} onClick={() => { setDeclining(x.suggestion_id); setWhy('') }}>반려</button>
-                </span>
-              )
+            {x.status === 'PENDING' && declining === x.suggestion_id ? (
+              <span className="sg-why">
+                <input className="fi" value={why} onChange={(e) => setWhy(e.target.value)} aria-label="반려 사유" placeholder="반려 사유" />
+                <button type="button" className="bo" disabled={busy || !why.trim()} onClick={() => decline(x.suggestion_id)}>반려</button>
+                <button type="button" className="lnk" onClick={() => setDeclining(null)}>취소</button>
+              </span>
             ) : (
-              <span className={cls} title={x.decision_reason ?? undefined}>{st}{x.decided_at ? ` · ${day(x.decided_at)}` : ''}{x.decided_by_name ? ` · ${x.decided_by_name}` : ''}</span>
+              <>
+                <span data-testid="suggestion-status"><span className={cls} title={x.decision_reason ?? undefined}>{st}</span></span>
+                {x.status === 'PENDING' ? (
+                  <span className="sg-act" title={canEdit ? undefined : lockText}>
+                    <button type="button" className="bo" disabled={!canEdit} onClick={() => onAccept(x)}>반영</button>
+                    <button type="button" className="bo" disabled={!canEdit} onClick={() => { setDeclining(x.suggestion_id); setWhy('') }}>반려</button>
+                  </span>
+                ) : (
+                  <span className="sg-done" title={x.decision_reason ?? undefined}>{x.decided_at ? day(x.decided_at) : '—'}{x.decided_by_name ? ` · ${x.decided_by_name}` : ''}</span>
+                )}
+              </>
             )}
           </div>
         )

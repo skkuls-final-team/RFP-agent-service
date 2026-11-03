@@ -31,6 +31,12 @@
 .rhist li{margin-bottom:4px}
 .rhist .rwho{color:var(--c-muted)}
 .rhist .rdis{color:var(--c-disabled);text-decoration:line-through}
-/* 사람이 제안한 표현 (add-rule-suggestion): 목업은 상태 칸만 있어 [반영]·[반려] 단추가 들어가게 마지막 칸을 넓힌다 */
-.rkp-r.sg{grid-template-columns:54px minmax(0,1fr) minmax(160px,260px) auto}
-.rkp-r.sg .fi{height:30px;width:180px}
+/* 사람이 제안한 표현 (add-rule-suggestion, update-suggestion-list-layout): 줄마다 같은 다섯 칸 고정 폭.
+   상태 칸은 상태만, 처리 칸은 [반영]·[반려] 또는 처리한 날짜·사람. 반려 사유 입력은 두 칸에 걸친다 */
+.rkp-r.sg{grid-template-columns:54px minmax(0,2fr) minmax(0,1fr) 84px 150px}
+.rkp-r.sg-h{padding-top:8px;padding-bottom:8px;background:var(--c-bg-page);color:var(--c-muted);font-size:var(--fs-xs);font-weight:600}
+.rkp-r.sg-h>span:nth-child(3){color:var(--c-muted)}
+.rkp-r.sg .sg-act{display:flex;gap:6px;align-items:center}
+.rkp-r.sg .sg-done{color:var(--c-muted);font-size:var(--fs-xs)}
+.rkp-r.sg .sg-why{grid-column:4 / 6;display:flex;gap:6px;align-items:center}
+.rkp-r.sg .fi{height:30px;width:150px}

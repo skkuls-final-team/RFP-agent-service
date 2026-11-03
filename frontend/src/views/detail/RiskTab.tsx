@@ -30,6 +30,15 @@ const KIND_NOTES: Record<string, string> = {
   OPEN_SCOPE: '대상 범위가 열려 있는 표현',
 }
 
+/** 제안 표현은 100자까지만 받는다. 더 길면 낱말 중간에서 끊지 않도록 그 안의 마지막 띄어쓰기에서 자르고 끝 문장부호를 뗀다 */
+function cutWords(text: string, max: number) {
+  const t = text.trim()
+  if (t.length <= max) return t
+  const head = t.slice(0, max + 1)
+  const at = head.lastIndexOf(' ')
+  return (at > 0 ? head.slice(0, at) : t.slice(0, max)).replace(/[\s,;:·(（「“"']+$/u, '')
+}
+
 function title(r: Risk): string {
   if (r.risk_kind === 'VALUE_MISMATCH') {
     const values = r.members.map((m) => m.value_raw).filter(Boolean).join(' / ')
@@ -177,7 +186,8 @@ function Found({ run, docs }: { run: RunSummary; docs: RunDocument[] }) {
   const [flash, setFlash] = useState(false)
   const input = useRef<HTMLInputElement>(null)
   // 후보가 많으면 제안 칸이 화면 밖이라, 채운 뒤 그 칸으로 옮기고 커서를 둔다 (update-suggest-fill-focus)
-  const fill = (sentence: string, memo: string) => {
+  const fill = (raw: string, memo: string) => {
+    const sentence = cutWords(raw, 100)
     setText(sentence); setNote(memo); setFlash(true)
     requestAnimationFrame(() => {
       input.current?.scrollIntoView({ block: 'center', behavior: 'smooth' })
@@ -185,7 +195,7 @@ function Found({ run, docs }: { run: RunSummary; docs: RunDocument[] }) {
       input.current?.select()
     })
     setTimeout(() => setFlash(false), 1500)
-    toast.done('제안 칸에 문장을 채웠습니다. 위험한 표현만 남기고 줄인 뒤 [위험 표현 사전에 추가 제안]을 누르세요.')
+    toast.done(`제안 칸에 문장을 채웠습니다.${sentence.length < raw.trim().length ? ' 100자가 넘어 낱말 경계에서 줄였습니다.' : ''} 위험한 표현만 남기고 줄인 뒤 [위험 표현 사전에 추가 제안]을 누르세요.`)
   }
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -227,7 +237,7 @@ function Found({ run, docs }: { run: RunSummary; docs: RunDocument[] }) {
             <span>{locShort(c, docs)} · 유사 {c.target ? `${RISK_NAMES[c.target] ?? c.target} ` : ''}“{c.near_text}” · 유사도 {c.score.toFixed(2)}</span></div>
           <button type="button" className="bo" disabled={!canSuggest || busy}
             title={canSuggest ? '아래 제안 칸에 이 문장을 채웁니다. 표현만 남기고 줄여서 제안하세요.' : '엔지니어만 제안할 수 있습니다'}
-            onClick={() => fill(c.text_raw.slice(0, 100), `유사 문장 (유사도 ${c.score.toFixed(2)})`)}>사전 추가 제안</button>
+            onClick={() => fill(c.text_raw, `유사 문장 (유사도 ${c.score.toFixed(2)})`)}>사전 추가 제안</button>
         </div>
       ))}
       <div className={'rk-f' + (flash ? ' on' : '')}>

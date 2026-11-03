@@ -47,9 +47,32 @@ test('사전 추가 제안 칸으로 옮김', async ({ page }) => {
   await page.getByTestId('meaning-candidate').first().getByRole('button', { name: '사전 추가 제안' }).click()
   await expect(field).toBeInViewport()
   await expect(field).toBeFocused()
-  await expect(field).toHaveValue(long(0).slice(0, 100))
+  await expect(field).toHaveValue(long(0).slice(0, 101).replace(/\s\S*$/, '').replace(/[,;:]+$/, ''))
   await expect(page.locator('.uisnk')).toContainText('제안 칸에 문장을 채웠습니다')
   await expect(page.getByTestId('suggestion')).toHaveCount(before)            // 바로 보내지 않는다
+  await page.unrouteAll({ behavior: 'ignoreErrors' })
+})
+
+// 명세 review-workspace "사전 추가 후보에서 제안 칸으로" (change update-suggestion-list-layout)
+test('긴 문장은 낱말 경계에서 자름', async ({ page }) => {
+  const run = await riskRun(page.request, `낱말 경계 ${Date.now()}`)
+  // 100자 자리가 낱말 "installation" 가운데에 오는 문장
+  const sentence = '3) The Contractor shall supply all cables, piping, anchor bolts, nuts and embedded materials for installation of each equipment.'
+  await page.route(`**/api/runs/${run.run_id}/meaning-candidates`, (route) => route.fulfill({ json: { status: 'DONE', items: [{
+    candidate_id: 7, run_id: run.run_id, review_no: run.review_no, kind: 'RISK_SENTENCE', requirement_id: 1, text_raw: sentence,
+    near_text: 'Any item not listed shall be deemed to be accepted by the Vendor.', target: 'BLANKET', score: 0.8,
+    second_target: null, second_score: null, status: 'OPEN', locations: [LOC],
+  }] } }))
+  await as(page, ENGINEER)
+  await page.goto(`/#/reviews/${run.run_id}`)
+  await page.getByRole('tab', { name: '위험 조건' }).click()
+  await page.getByTestId('meaning-candidate').getByRole('button', { name: '사전 추가 제안' }).click()
+  const field = page.getByLabel('놓친 위험 표현')
+  await expect(field).toHaveValue('3) The Contractor shall supply all cables, piping, anchor bolts, nuts and embedded materials for')
+  const v = await field.inputValue()
+  expect(v.length).toBeLessThanOrEqual(100)
+  expect(sentence.startsWith(v + ' ')).toBe(true)                          // 낱말 중간에서 끊기지 않음
+  await expect(page.locator('.uisnk')).toContainText('100자가 넘어 낱말 경계에서 줄였습니다')
   await page.unrouteAll({ behavior: 'ignoreErrors' })
 })
 

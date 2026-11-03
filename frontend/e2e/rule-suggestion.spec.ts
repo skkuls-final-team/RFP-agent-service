@@ -74,3 +74,27 @@ test('제안하고 반영하기', async ({ page }) => {
   await page.getByRole('tab', { name: '위험 조건' }).click()
   await expect(page.locator('#risk .rk').getByTestId('suggestion').filter({ hasText: PHRASE })).toContainText('반영')
 })
+
+// 명세 review-workspace "사전 추가 제안 화면" (change update-suggestion-list-layout)
+test('제안 목록 칸 맞춤', async ({ page }) => {
+  const base = { note: null, run_id: 3, review_no: 'RV-2026-003', requirement_id: 1, suggested_by: 1, suggested_by_name: '엔지니어',
+    suggested_at: '2026-11-02T03:00:00Z', edit_id: null, locations: [{ file_no: 91, section_no: '1', section_title: 'GENERAL', table_name: null, item_no: null, line_start: 10, line_end: 10 }] }
+  await page.route('**/api/rule-suggestions*', (route) => route.fulfill({ json: [
+    { ...base, suggestion_id: 1, expression: 'to the satisfaction of the Owner', status: 'PENDING', decided_by: null, decided_by_name: null, decided_at: null, decision_reason: null },
+    { ...base, suggestion_id: 2, expression: "corresponding to the Employer's Requirement", status: 'ACCEPTED', decided_by: 1, decided_by_name: '엔지니어', decided_at: '2026-11-03T03:00:00Z', decision_reason: '범위 표현' },
+  ] }))
+  await as(page, ENGINEER)
+  await page.goto('/#/rules')
+  const box = page.locator('section.rkp').first()
+  const head = box.locator('.sg-h')
+  for (const name of ['제안일', '제안한 표현', '제안한 곳', '상태', '처리']) await expect(head).toContainText(name)
+  const rows = box.getByTestId('rule-suggestion')
+  await expect(rows).toHaveCount(2)
+  const x = async (i: number) => (await rows.nth(i).getByTestId('suggestion-status').boundingBox())!.x
+  const hx = (await head.locator('span').nth(3).boundingBox())!.x
+  expect(await x(0)).toBe(await x(1))                                     // 확인 대기·반영 줄의 상태 칸이 같은 자리
+  expect(await x(0)).toBe(hx)                                             // 칸 이름과도 같은 자리
+  await expect(rows.nth(0).getByRole('button', { name: '반영' })).toBeVisible()
+  await expect(rows.nth(1)).toContainText('11-03 · 엔지니어')
+  await page.unrouteAll({ behavior: 'ignoreErrors' })
+})
