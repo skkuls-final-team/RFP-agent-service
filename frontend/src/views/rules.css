@@ -40,3 +40,15 @@
 .rkp-r.sg .sg-done{color:var(--c-muted);font-size:var(--fs-xs)}
 .rkp-r.sg .sg-why{grid-column:4 / 6;display:flex;gap:6px;align-items:center}
 .rkp-r.sg .fi{height:30px;width:150px}
+/* 제안 줄 펼치기 (add-suggestion-source): 줄 전체를 눌러 원래 문장을 본다 */
+.rkp-r.sg:not(.sg-h){cursor:pointer}
+.rkp-r.sg:not(.sg-h):hover,.rkp-r.sg.on{background:var(--c-bg-hover)}
+.rkp-r.sg .sg-x{display:flex;gap:4px;align-items:flex-start;padding:0;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer;min-width:0}
+.rkp-r.sg .sg-x .ms{font-size:var(--ic-s);color:var(--c-muted);margin-top:1px}
+.rkp-r.sg .sg-src{grid-column:1 / -1;margin:2px 0 4px 66px;padding:10px 14px;border-left:3px solid var(--c-navy);background:var(--c-bg-page);cursor:auto;font-size:var(--fs-sm)}
+.rkp-r.sg .sg-src .sg-lbl{display:block;margin:8px 0 2px;color:var(--c-muted);font-size:var(--fs-xs);font-weight:600}
+.rkp-r.sg .sg-src .sg-lbl:first-child{margin-top:0}
+.rkp-r.sg .sg-src .sg-txt{margin:0;line-height:1.6}
+.rkp-r.sg .sg-src .sg-note{margin:4px 0 0;color:var(--c-muted);font-size:var(--fs-xs)}
+.rkp-r.sg .sg-src ul{margin:0;padding-left:18px}
+.rkp-r.sg .sg-src p{margin:0}

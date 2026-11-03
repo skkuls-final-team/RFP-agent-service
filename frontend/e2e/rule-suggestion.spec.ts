@@ -98,3 +98,38 @@ test('제안 목록 칸 맞춤', async ({ page }) => {
   await expect(rows.nth(1)).toContainText('11-03 · 엔지니어')
   await page.unrouteAll({ behavior: 'ignoreErrors' })
 })
+
+// 명세 review-workspace "사전 추가 제안 화면" (change add-suggestion-source)
+test('제안 줄 펼쳐 원문 보기', async ({ page }) => {
+  const loc = { file_no: 91, section_no: '1.5', section_title: '현장작업', table_name: null, item_no: null, line_start: 40, line_end: 41 }
+  await page.route('**/api/rule-suggestions*', (route) => route.fulfill({ json: [{
+    suggestion_id: 1, expression: 'anchor bolts, nuts and embedded materials for', note: '범위 모호', run_id: 3, review_no: 'RV-2026-003',
+    requirement_id: 1, status: 'PENDING', suggested_by: 1, suggested_by_name: '엔지니어', suggested_at: '2026-11-02T03:00:00Z',
+    decided_by: null, decided_by_name: null, decided_at: null, decision_reason: null, edit_id: null, locations: [loc],
+  }] }))
+  let asked = ''
+  await page.route('**/api/runs/3/documents/91/lines*', (route) => {
+    asked = route.request().url()
+    return route.fulfill({ json: { file_no: 91, file_name: 'spec.docx', line_from: 40, line_to: 41, partial: false, lines: [
+      { line_no: 40, text: '3) The Contractor shall supply all cables, piping, anchor bolts, nuts and' },
+      { line_no: 41, text: 'embedded materials for installation of each equipment.' },
+    ] } })
+  })
+  await as(page, ENGINEER)
+  await page.goto('/#/rules')
+  const row = page.getByTestId('rule-suggestion')
+  const src = row.getByTestId('suggestion-source')
+  await row.getByRole('button', { name: '반영' }).click()                  // 단추는 펼치지 않는다
+  await page.getByRole('dialog').getByRole('button', { name: '닫기' }).first().click()
+  await expect(src).toHaveCount(0)
+  await row.click({ position: { x: 600, y: 12 } })                         // 줄을 누르면 펼침
+  await expect(src).toContainText('3) The Contractor shall supply all cables, piping, anchor bolts, nuts and embedded materials for installation of each equipment.')
+  await expect(src.locator('mark')).toHaveText('anchor bolts, nuts and embedded materials for')   // 줄 바꿈을 넘어 강조
+  await expect(src).toContainText('spec.docx')
+  await expect(src).toContainText('범위 모호')
+  expect(asked).toContain('from=40&to=41')
+  await expect(row.getByRole('button', { name: /anchor bolts/ })).toHaveAttribute('aria-expanded', 'true')
+  await row.getByRole('button', { name: /anchor bolts/ }).click()          // 다시 누르면 접힘
+  await expect(src).toHaveCount(0)
+  await page.unrouteAll({ behavior: 'ignoreErrors' })
+})

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { api, type CompareRule, type DocKindRule, type ItemKey, type MeaningCandidate, type RiskExpression, type RuleDictionary, type RuleEdit, type RuleSuggestion, type RuleValue } from '../api'
+import { api, type CompareRule, type Location, type DocKindRule, type ItemKey, type MeaningCandidate, type RiskExpression, type RuleDictionary, type RuleEdit, type RuleSuggestion, type RuleValue } from '../api'
 import { ErrorText } from '../components/common'
 import { Pager } from '../components/Pager'
 import { useLoad } from '../components/useLoad'
@@ -7,6 +7,7 @@ import { usePageCss } from '../shell/pageCss'
 import { currentPath, pathQuery } from '../shell/router'
 import { useSession } from '../shell/useSession'
 import { RuleDialog, type RuleTarget } from './RuleDialog'
+import { ErrorBox, Loading } from '../ui'
 import { DIRECTION_NAMES, DOC_KIND_NAMES, EDITOR_ROLES, locationText, RISK_NAMES, RULE_FIELD_NAMES } from '../components/labels'
 
 // SCR-17 판정 규칙 (목업 v4.57 Rules). docs/screens/SCR-17-판정규칙.md
@@ -276,12 +277,44 @@ function ItemLinks({ items, error, canEdit, lockText, onDone }: {
   )
 }
 
+/** 표현을 문장에서 찾는다. 저장된 표현은 띄어쓰기를 하나로 줄였으므로 띄어쓰기 차이·대소문자를 무시한다 [앞, 강조, 뒤] */
+function markLoose(text: string, expr: string): [string, string, string] {
+  const words = expr.trim().split(/\s+/).map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  const m = words.length ? new RegExp(words.join('\\s+'), 'i').exec(text) : null
+  return m ? [text.slice(0, m.index), m[0], text.slice(m.index + m[0].length)] : [text, '', '']
+}
+
+/** 제안 줄을 펼치면: 표현이 나온 원래 문장 전체(표현 강조), 원문 위치 모두, 메모·반려 사유 (add-suggestion-source) */
+function SuggestionSource({ s }: { s: RuleSuggestion }) {
+  const loc: Location = s.locations[0]
+  const from = loc.line_start ?? 1
+  const to = Math.min(from + 39, loc.line_end ?? from)
+  const lines = useLoad(() => api.documentLines(s.run_id, loc.file_no, from, to), [s.run_id, loc.file_no, from, to])
+  const text = lines.data?.lines.map((l) => l.text).join(' ') ?? ''
+  const [a, m, b] = markLoose(text, s.expression)
+  return (
+    <div className="sg-src" data-testid="suggestion-source">
+      <b className="sg-lbl">원래 문장</b>
+      {lines.error ? <ErrorBox error={lines.error} onRetry={lines.reload} />
+        : !lines.data ? <Loading label="원문 불러오는 중" />
+        : <p className="sg-txt">{a}{m && <mark>{m}</mark>}{b}</p>}
+      {lines.data?.partial && <p className="sg-note" role="note">원문 파일이 없어 추출된 문장만 표시합니다.</p>}
+      {lines.data && !m && <p className="sg-note">제안한 표현을 이 문장에서 찾지 못해 강조하지 않았습니다.</p>}
+      <b className="sg-lbl">원문 위치</b>
+      <ul>{s.locations.map((l, i) => <li key={i}>{lines.data && i === 0 ? `${lines.data.file_name} · ` : ''}{locationText(l)}</li>)}</ul>
+      {s.note && <><b className="sg-lbl">메모</b><p>{s.note}</p></>}
+      {s.decision_reason && <><b className="sg-lbl">{s.status === 'DECLINED' ? '반려 사유' : '반영 사유'}</b><p>{s.decision_reason}</p></>}
+    </div>
+  )
+}
+
 function Suggestions({ items, error, canEdit, lockText, onAccept, onDeclined }: {
   items: RuleSuggestion[]; error: string | null; canEdit: boolean; lockText: string
   onAccept: (s: RuleSuggestion) => void; onDeclined: () => void
 }) {
   const { user } = useSession()
   const [declining, setDeclining] = useState<number | null>(null)
+  const [open, setOpen] = useState<number | null>(null)
   const [why, setWhy] = useState('')
   const [busy, setBusy] = useState(false)
   const [fail, setFail] = useState<string | null>(null)
@@ -294,6 +327,7 @@ function Suggestions({ items, error, canEdit, lockText, onAccept, onDeclined }: 
       .finally(() => setBusy(false))
   }
   const waiting = items.filter((s) => s.status === 'PENDING').length
+  const toggle = (id: number) => setOpen(open === id ? null : id)
   return (
     <section className="rkp" aria-labelledby="rkpT">
       <div className="rkp-h"><h2 id="rkpT">위험 표현 사전 · 사람이 제안한 표현{waiting > 0 && <span className="st c-blue" style={{ marginLeft: 8 }}>확인 대기 {waiting}</span>}</h2>
@@ -308,9 +342,11 @@ function Suggestions({ items, error, canEdit, lockText, onAccept, onDeclined }: 
         const [cls, st] = SUGGEST_STATUS[x.status]
         const where = x.locations[0] ? locationText(x.locations[0]) : '—'
         return (
-          <div key={x.suggestion_id} className="rkp-r sg" data-testid="rule-suggestion">
+          <div key={x.suggestion_id} className={'rkp-r sg' + (open === x.suggestion_id ? ' on' : '')} data-testid="rule-suggestion"
+            onClick={(e) => { if (!(e.target as HTMLElement).closest('a,input,button:not(.sg-x)')) toggle(x.suggestion_id) }}>
             <span className="mono">{day(x.suggested_at)}</span>
-            <b title={x.note ?? undefined}>“{x.expression}”</b>
+            <button type="button" className="sg-x" aria-expanded={open === x.suggestion_id} title="눌러서 원래 문장 보기">
+              <span className="ms" aria-hidden="true">{open === x.suggestion_id ? 'expand_less' : 'expand_more'}</span><b>“{x.expression}”</b></button>
             <span><a href={`#/reviews/${x.run_id}`} title="위험 조건 탭에서 제안했습니다">{x.review_no}</a> · {where} · {x.suggested_by_name}{x.note ? ` · ${x.note}` : ''}</span>
             {x.status === 'PENDING' && declining === x.suggestion_id ? (
               <span className="sg-why">
@@ -331,6 +367,7 @@ function Suggestions({ items, error, canEdit, lockText, onAccept, onDeclined }: 
                 )}
               </>
             )}
+            {open === x.suggestion_id && <SuggestionSource s={x} />}
           </div>
         )
       })}
