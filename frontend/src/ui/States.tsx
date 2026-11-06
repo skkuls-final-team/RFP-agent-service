@@ -16,3 +16,8 @@ export function ErrorBox({ error, onRetry }: { error: string; onRetry?: () => vo
     </div>
   )
 }
+
+/** 진행 중 표시 (update-send-progress). 단추 글자 앞에 붙인다. 화면 읽기 도구에는 단추의 aria-busy로 알린다 */
+export function Spinner() {
+  return <span className="uispin" aria-hidden="true" data-testid="spinner" />
+}

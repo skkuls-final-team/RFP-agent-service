@@ -113,6 +113,9 @@ test('요청하기 예시', async ({ page }) => {
 // 명세 requirement-extraction "사람이 유형 고치기" (change add-type-examples, C3)
 test('협조 요청 상세에서 유형 고치기', async ({ page, request }) => {
   const run = await riskRun(request, `유형 고치기 ${Date.now()}`)
+  // 같은 파일은 처리 결과를 다시 쓰므로(update-document-reuse) 고친 유형이 다음 검토로 이어진다. 끝에 원래 유형으로 되돌린다
+  const before = (await (await request.get('/api/assignments?role=QUALITY')).json() as { run_id: number; text: string; requirement_id: number; type_code: string }[])
+    .find((a) => a.run_id === run.run_id && TYPE_TEST.test(a.text))!
   await as(page, ENGINEER)
   await page.goto('/#/todo')
   await page.getByRole('navigation', { name: '수신 부서' }).getByRole('button', { name: '품질 담당' }).click()
@@ -126,4 +129,33 @@ test('협조 요청 상세에서 유형 고치기', async ({ page, request }) =>
   await expect(fix.getByRole('status')).toContainText('유형을 제조사 자격(으)로 고쳤습니다')
   const log = await (await request.get(`/api/runs/${run.run_id}/history`)).json() as { target_table: string; after_value: { type_code?: string } | null }[]
   expect(log.some((h) => h.target_table === 'requirement' && h.after_value?.type_code === 'MAKER_QUAL')).toBe(true)
+  const back = await request.post(`/api/runs/${run.run_id}/requirements/${before.requirement_id}/type`,
+    { data: { type_code: before.type_code, reason: 'e2e 되돌림', actor_id: ENGINEER } })
+  expect(back.ok()).toBe(true)
+})
+
+// 명세 role-assignment "보내는 동안 진행 표시" (change update-send-progress)
+test('보내는 동안 진행 표시', async ({ page, request }) => {
+  const run = await riskRun(request, `보내기 진행 ${Date.now()}`)
+  await as(page, ENGINEER)
+  // 서버 응답을 늦춰 보내는 동안의 모양을 본다 (응답은 실제 서버 것)
+  await page.route('**/assignments/send', async (route) => {
+    await new Promise((ok) => setTimeout(ok, 1500))
+    await route.fulfill({ response: await route.fetch() })
+  })
+  await page.goto('/#/todo')
+  await page.getByRole('navigation', { name: '수신 부서' }).getByRole('button', { name: '품질 담당' }).click()
+  // 요청이 많이 쌓인 DB에서도 이 검토 줄이 첫 쪽에 오게 검토로 거른다
+  const find = page.getByRole('search', { name: '협조 요청 찾기' })
+  await find.getByLabel('RFP 검토').selectOption(String(run.run_id))
+  await find.getByRole('button', { name: '검색' }).click()
+  const r = row(page, run.review_no)
+  await r.getByRole('button', { name: '보내기' }).click()
+  const busy = r.getByRole('button', { name: '보내는 중…' })
+  await expect(busy).toBeVisible()
+  await expect(busy).toHaveAttribute('aria-busy', 'true')
+  await expect(busy.getByTestId('spinner')).toBeVisible()
+  await expect(busy).toBeDisabled()                        // 보내는 동안 다시 누를 수 없음 (다른 줄 단추도 같은 값으로 잠김)
+  await expect(page.getByRole('status')).toContainText('메일을 보냈습니다')
+  await expect(r.getByTestId('spinner')).toHaveCount(0)
 })

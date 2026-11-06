@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { api, type CompareRule, type Location, type DocKindRule, type ItemKey, type MeaningCandidate, type RiskExpression, type RuleDictionary, type RuleEdit, type RuleSuggestion, type RuleValue } from '../api'
 import { ErrorText } from '../components/common'
 import { Pager } from '../components/Pager'
+import { useKeepHeight } from '../components/useKeepHeight'
 import { useLoad } from '../components/useLoad'
 import { usePageCss } from '../shell/pageCss'
 import { currentPath, pathQuery } from '../shell/router'
@@ -141,6 +142,8 @@ export function Rules() {
   const needle = q.trim().toLowerCase()
   const found = T ? T.rows.filter((r) => !needle || r.search.toLowerCase().includes(needle)) : []
   const rows = found.slice((page - 1) * size, page * size)
+  // 꽉 찬 쪽의 표 높이를 마지막 쪽에도 유지 (update-rule-page-height)
+  const { ref: tableRef, minHeight: keptHeight } = useKeepHeight<HTMLDivElement>(found.length > size && rows.length === size && !rows.some((r) => open[r.key]), `${tab}|${needle}|${size}`, page)
 
   return (
     <main className="main">
@@ -175,7 +178,7 @@ export function Rules() {
           <input className="fi" id="rq" value={q} onChange={(e) => { setQ(e.target.value); setPage(1) }} placeholder={T?.ph} style={{ flex: '1 1 260px', maxWidth: 340 }} />
           {q && <button type="button" className="bo" onClick={() => { setQ(''); setPage(1) }}>검색 지우기</button>}
         </div>
-        <div className="tw">
+        <div className="tw" ref={tableRef} style={{ minHeight: keptHeight, boxSizing: 'border-box' }} data-testid="rule-table">
           <table className="tbl">
             <thead><tr>{T?.cols.map(([label, right]) => <th key={label} style={right ? { textAlign: 'right' } : undefined}>{label}</th>)}</tr></thead>
             <tbody>
@@ -259,7 +262,7 @@ function ItemLinks({ items, error, canEdit, lockText, onDone }: {
     <section className="rkp" aria-labelledby="ilT" style={{ marginTop: 16 }}>
       <div className="rkp-h"><h2 id="ilT">항목 이름 · 연결 후보{items.length > 0 && <span className="st c-blue" style={{ marginLeft: 8 }}>{items.length}</span>}</h2>
         <span>판정 대상 데이터시트에서 사전에 없어 판정하지 못한 항목 이름을, 항목 표현과 뜻으로 비교했습니다. 가장 가까운 항목이 0.85 이상이고 둘째보다 0.03 앞설 때만 보입니다.</span></div>
-      {items.length === 0 && <div className="rkp-r"><span className="c-grey">연결 후보가 없습니다. AI를 사용한 분석에서만 만들어집니다.</span></div>}
+      {items.length === 0 && <div className="rkp-r rkp-e"><span className="c-grey">연결 후보가 없습니다. AI를 사용한 분석에서만 만들어집니다.</span></div>}
       {items.map((x) => (
         <div key={x.candidate_id} className="rkp-r sg" data-testid="item-link">
           <span className="mono">{x.score.toFixed(2)}</span>
@@ -332,7 +335,7 @@ function Suggestions({ items, error, canEdit, lockText, onAccept, onDeclined }: 
     <section className="rkp" aria-labelledby="rkpT">
       <div className="rkp-h"><h2 id="rkpT">위험 표현 사전 · 사람이 제안한 표현{waiting > 0 && <span className="st c-blue" style={{ marginLeft: 8 }}>확인 대기 {waiting}</span>}</h2>
         <span>검토 중 엔지니어가 찾은 특이 요구입니다. 규칙 담당이 반영하면 사전에 들어가 다음 검토부터 위험 조건으로 잡힙니다.</span></div>
-      {items.length === 0 && <div className="rkp-r"><span className="c-grey">제안한 표현이 없습니다. 검토 상세 위험 조건 탭에서 제안합니다.</span></div>}
+      {items.length === 0 && <div className="rkp-r rkp-e"><span className="c-grey">제안한 표현이 없습니다. 검토 상세 위험 조건 탭에서 제안합니다.</span></div>}
       {items.length > 0 && (
         <div className="rkp-r sg sg-h" aria-hidden="true">
           <span>제안일</span><span>제안한 표현</span><span>제안한 곳</span><span>상태</span><span>처리</span>

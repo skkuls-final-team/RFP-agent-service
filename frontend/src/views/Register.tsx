@@ -1,6 +1,5 @@
 import { useState, type ChangeEvent, type DragEvent, type ReactNode } from 'react'
 import { api, type BusinessListItem, type DocumentChoice, type DocumentPreview, type RunSummary } from '../api'
-import { AiModeLine } from '../components/AiMode'
 import { DOC_KIND_NAMES } from '../components/labels'
 import { useLoad } from '../components/useLoad'
 import { usePageCss } from '../shell/pageCss'
@@ -331,7 +330,6 @@ export function Register({ businessId = null }: { businessId?: number | null }) 
               {engineers.map((u) => <option key={u.user_id} value={u.user_id}>{u.user_name}</option>)}
             </select>
           </Field>
-          <AiModeLine />
         </div>
       )}
 

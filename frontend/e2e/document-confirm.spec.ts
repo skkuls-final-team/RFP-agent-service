@@ -65,3 +65,17 @@ test('등록 화면 판정 대상 없음 안내', async ({ page }) => {
   await expect(page.locator('.foot2')).not.toContainText('판정 대상 문서')
   await expect(page.getByRole('button', { name: /다음/ })).toBeEnabled()
 })
+
+// 명세 service-health "검토 등록에는 AI 방식 줄 없음" (change update-register-ai-line)
+test('검토 등록에는 AI 방식 줄 없음', async ({ page }) => {
+  await page.goto('/#/register')
+  await page.getByLabel('파일 올리기').setInputFiles(fileURLToPath(DOCX))
+  await page.locator('tr', { hasText: 'synthetic_judgment.docx' }).getByLabel('묶음').selectOption('B')
+  await page.getByRole('button', { name: /다음/ }).click()
+  await page.getByLabel('제출 마감일').fill(isoAfter(10))
+  await page.getByRole('button', { name: /다음/ }).click()
+  await expect(page.getByLabel('담당 엔지니어')).toBeVisible()
+  await expect(page.getByTestId('ai-mode')).toHaveCount(0)
+  await page.goto('/#/runlog')
+  await expect(page.getByTestId('ai-mode')).toBeVisible()
+})

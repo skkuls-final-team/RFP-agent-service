@@ -22,7 +22,10 @@ body{word-break:keep-all;overflow-wrap:break-word}
 .uiload i{display:block;height:14px;border-radius:var(--r-sm);background:var(--c-bar);animation:uiPulse 1.2s ease-in-out infinite}
 .uiload i:nth-child(2){width:80%}.uiload i:nth-child(3){width:60%}
 @keyframes uiPulse{50%{opacity:.45}}
-@media (prefers-reduced-motion:reduce){.uiload i{animation:none}}
+/* 진행 중 표시: 단추 안에서 도는 동그라미 (update-send-progress) */
+.uispin{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-1px;margin-right:6px;animation:uiSpin .8s linear infinite}
+@keyframes uiSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.uiload i{animation:none}.uispin{animation-duration:2.4s}}
 .uiempty{padding:var(--s-6) var(--s-4);text-align:center;color:var(--c-muted);font-size:var(--t-sm)}
 .uierr{display:flex;align-items:center;gap:var(--s-2);padding:var(--s-3) var(--s-4);border:1px solid var(--c-red-line);background:var(--c-red-bg);color:var(--c-red);border-radius:var(--r-lg);font-size:var(--t-sm)}
 .uierr span{flex:1}

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { api, type Assignment, type User } from '../api'
 import { Pager } from '../components/Pager'
 import { saveFile } from '../components/download'
-import { Button, useToast } from '../ui'
+import { Button, Spinner, useToast } from '../ui'
 import { stamp } from '../components/format'
 import { locShort } from '../components/judgment'
 import { POINT_KIND_NAMES } from '../components/labels'
@@ -220,9 +220,11 @@ export function Todo() {
         <td style={{ whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums' }}>{a.mail_sent_at ? stamp(a.mail_sent_at) : '—'}</td>
         <td style={{ whiteSpace: 'nowrap' }} onClick={(e) => e.stopPropagation()}>
           {engineer && a.status === 'TODO' && <button type="button" className="lnk" disabled={sending !== null}
-            onClick={() => send(a)}>{sending === a.assignment_id ? '보내는 중…' : a.mail_error ? '다시 보내기' : '보내기'}</button>}
+            aria-busy={sending === a.assignment_id || undefined}
+            onClick={() => send(a)}>{sending === a.assignment_id ? <><Spinner />보내는 중…</> : a.mail_error ? '다시 보내기' : '보내기'}</button>}
           {engineer && a.status === 'DOING' && <button type="button" className="lnk" disabled={sending !== null}
-            onClick={() => send(a, true)}>{sending === a.assignment_id ? '보내는 중…' : '재요청'}</button>}</td>
+            aria-busy={sending === a.assignment_id || undefined}
+            onClick={() => send(a, true)}>{sending === a.assignment_id ? <><Spinner />보내는 중…</> : '재요청'}</button>}</td>
       </tr>
     )
   }
@@ -336,7 +338,7 @@ export function Todo() {
         </div>}
       </section>
       {picked && <Detail a={picked} now={now} dept={DEPTS.find(([k]) => k === picked.assignee_role)?.[1] ?? label} user={user}
-        sending={sending !== null} onSend={send} onClose={() => setOpen(null)}
+        sending={sending !== null} sendingMe={sending === picked.assignment_id} onSend={send} onClose={() => setOpen(null)}
         onChanged={(msg) => { toast.done(msg); list.reload() }} />}
       {writing && <NewRequest dept={dept} rows={all.filter(inTab)} users={users} onClose={() => setWriting(false)}
         onSent={() => { setWriting(false); toast.done('예시 화면이라 보내지 않았습니다.') }} />}
@@ -353,8 +355,8 @@ function useEsc(onClose: () => void) {
 }
 
 /** 요청 상세 창: 요청 내용, 원문, 회신, 진행(만듦 → 메일 보냄 → 회신 받음). 엔지니어는 여기서 보내기·회신 받음을 표시한다 */
-function Detail({ a, now, dept, user, sending, onSend, onClose, onChanged }: {
-  a: Assignment; now: number; dept: string; user: User | null; sending: boolean; onSend: (a: Assignment, resend?: boolean) => void
+function Detail({ a, now, dept, user, sending, sendingMe, onSend, onClose, onChanged }: {
+  a: Assignment; now: number; dept: string; user: User | null; sending: boolean; sendingMe: boolean; onSend: (a: Assignment, resend?: boolean) => void
   onClose: () => void; onChanged: (msg: string) => void
 }) {
   useEsc(onClose)
@@ -428,10 +430,10 @@ function Detail({ a, now, dept, user, sending, onSend, onClose, onChanged }: {
           {error && <span className="aphint" role="alert" style={{ marginRight: 'auto' }}>{error}</span>}
           <span className="mdf-n">Esc로 닫기</span>
           <a className="bo" href={href(`/reviews/${a.run_id}`)}>검토 상세 열기</a>
-          {engineer && a.status === 'TODO' && <button type="button" className="bp" disabled={sending} onClick={() => onSend(a)}>
-            <span className="ms" aria-hidden="true" style={{ fontSize: 'var(--ic-s)' }}>send</span>{a.mail_error ? '다시 보내기' : '보내기'}</button>}
-          {engineer && a.status === 'DOING' && <button type="button" className="bo" disabled={sending} onClick={() => onSend(a, true)}>
-            <span className="ms" aria-hidden="true" style={{ fontSize: 'var(--ic-s)' }}>notifications_active</span>재요청</button>}
+          {engineer && a.status === 'TODO' && <button type="button" className="bp" disabled={sending} aria-busy={sendingMe || undefined} onClick={() => onSend(a)}>
+            {sendingMe ? <><Spinner />보내는 중…</> : <><span className="ms" aria-hidden="true" style={{ fontSize: 'var(--ic-s)' }}>send</span>{a.mail_error ? '다시 보내기' : '보내기'}</>}</button>}
+          {engineer && a.status === 'DOING' && <button type="button" className="bo" disabled={sending} aria-busy={sendingMe || undefined} onClick={() => onSend(a, true)}>
+            {sendingMe ? <><Spinner />보내는 중…</> : <><span className="ms" aria-hidden="true" style={{ fontSize: 'var(--ic-s)' }}>notifications_active</span>재요청</>}</button>}
           {engineer && a.status === 'DOING' && <button type="button" className="bp" disabled={busy} onClick={() => set('DONE')}>
             <span className="ms" aria-hidden="true" style={{ fontSize: 'var(--ic-s)' }}>mark_email_read</span>회신 완료 처리</button>}
           {engineer && done && <button type="button" className="bo" disabled={busy} onClick={() => set('DOING')}>회신 완료 취소</button>}

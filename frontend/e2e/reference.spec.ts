@@ -210,3 +210,41 @@ test('고칠 수 없는 역할', async ({ page, request }) => {
   await expect(page.locator('tr.rx').getByRole('button', { name: '수정' })).toBeDisabled()
   await expect(page.locator('tr.rx').getByRole('button', { name: '삭제' })).toBeDisabled()
 })
+
+// 명세 review-workspace "판정 규칙 표 쪽 높이 유지" (change update-rule-page-height)
+test('마지막 쪽도 표 높이 유지', async ({ page }) => {
+  await page.goto('/#/rules')
+  const tabs = page.getByRole('tablist', { name: '규칙 종류' })
+  await tabs.getByRole('tab', { name: /비교 방향/ }).click()          // 39줄 → 10줄씩 4쪽, 마지막 쪽 9줄
+  const table = page.getByTestId('rule-table')
+  const pager = page.locator('.pager')
+  await expect(page.locator('tbody tr')).toHaveCount(10)
+  const h1 = (await table.boundingBox())!.height
+  const top = () => pager.evaluate((e) => e.getBoundingClientRect().top + window.scrollY)   // 문서 기준 (스크롤과 상관없이)
+  const y1 = await top()
+  const pages = page.getByRole('navigation', { name: '페이지' })
+  await pages.getByRole('button', { name: '다음 페이지' }).click()
+  await pages.getByRole('button', { name: '다음 페이지' }).click()
+  await pages.getByRole('button', { name: '다음 페이지' }).click()
+  await expect(page.locator('tbody tr')).not.toHaveCount(10)
+  expect(Math.abs((await table.boundingBox())!.height - h1)).toBeLessThan(2)
+  expect(Math.abs((await top()) - y1)).toBeLessThan(2)
+  await tabs.getByRole('tab', { name: /문서 종류/ }).click()          // 7줄 한 쪽 → 줄 수만큼
+  await expect(page.locator('tbody tr')).toHaveCount(7)
+  expect((await table.boundingBox())!.height).toBeLessThan(h1)
+})
+
+// 명세 review-workspace "판정 규칙 빈 안내 한 줄" (change update-rule-empty-text)
+test('빈 안내는 한 줄로', async ({ page }) => {
+  await page.route('**/api/item-candidates', (route) => route.fulfill({ json: [] }))
+  await page.route('**/api/rule-suggestions', (route) => route.fulfill({ json: [] }))
+  await page.goto('/#/rules')
+  await page.getByRole('tablist', { name: '규칙 종류' }).getByRole('tab', { name: /항목 이름/ }).click()
+  for (const text of ['연결 후보가 없습니다.', '제안한 표현이 없습니다.']) {
+    const line = page.getByText(text, { exact: false })
+    await expect(line).toBeVisible()
+    const box = (await line.boundingBox())!
+    expect(box.width).toBeGreaterThan(200)                 // 첫 칸(54px)에 갇히지 않음
+    expect(box.height).toBeLessThan(40)                    // 낱말마다 줄이 바뀌지 않음
+  }
+})

@@ -52,3 +52,6 @@
 .rkp-r.sg .sg-src .sg-note{margin:4px 0 0;color:var(--c-muted);font-size:var(--fs-xs)}
 .rkp-r.sg .sg-src ul{margin:0;padding-left:18px}
 .rkp-r.sg .sg-src p{margin:0}
+
+/* 빈 안내 줄은 칸으로 나누지 않고 한 줄 전체 (update-rule-empty-text). 격자 첫 칸(54px)에 들어가 낱말마다 줄이 바뀌던 것 */
+.rkp-r.rkp-e{display:block}
