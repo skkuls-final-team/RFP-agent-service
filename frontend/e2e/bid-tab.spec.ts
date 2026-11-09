@@ -27,7 +27,7 @@ async function openBid(page: Page, name: string) {
   const run = await deviationRun(page.request, `${name} ${Date.now()}`)
   await as(page, ENGINEER)
   await page.goto(`/#/reviews/${run.run_id}`)
-  await openTab(page, '입찰 영향')
+  await openTab(page, '강점 제안')
   return run
 }
 
@@ -55,9 +55,10 @@ test('사유 없이 버리기', async ({ page }) => {
   expect(actions).toContainEqual(expect.objectContaining({ action: 'DISCARD', reason: '이번 입찰에서는 내세우지 않음' }))
 })
 
-test('불리한 점 목록', async ({ page }) => {
+test('보완이 필요한 점 목록', async ({ page }) => {
   const run = await openBid(page, '불리한 점')
-  const cons = page.locator('#bid .cols > div').nth(1)
+  const cons = page.locator('#bid-cons')
+  await cons.locator('summary').click()
   await expect(cons.locator('.li', { hasText: '미달' })).toHaveCount(run.deviations)
   await expect(cons.locator('.li', { hasText: '미달' }).first()).toContainText('대응: 일탈 목록에 올리고')
   await expect(cons.locator('.li', { hasText: '값 불명확' }).first()).toContainText('대응: 서면 질의로')
@@ -89,7 +90,7 @@ test('비교 제품 바꾸기', async ({ page }) => {
   await seg.getByRole('button', { name: 'GIS-145-40-P7' }).click()
   await expect(seg.getByRole('button', { name: 'GIS-145-40-P7' })).toHaveAttribute('aria-pressed', 'true')
   expect(puts).toEqual([expect.objectContaining({ url: expect.stringContaining('/equipment/T7|/product'), body: { product_code: 'GIS-145-40-P7' } })])
-  await expect(page.getByRole('tab', { name: '입찰 영향' })).toHaveAttribute('aria-selected', 'true')
+  await expect(page.getByRole('tab', { name: /^강점 제안/ })).toHaveAttribute('aria-selected', 'true')
 })
 
 // change update-proposal-actions: 채택·버림 단추와 알림

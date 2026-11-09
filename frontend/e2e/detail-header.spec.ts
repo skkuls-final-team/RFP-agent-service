@@ -101,8 +101,8 @@ test('내보내기 묶음', async ({ page }) => {
 test('더 보기 탭', async ({ page }) => {
   await mock(page)
   await page.getByRole('button', { name: '더 보기' }).click()
-  await page.getByRole('menuitem', { name: '손실 환산 (참고)' }).click()
-  await expect(page.getByRole('tab', { name: '손실 환산 (참고)' })).toHaveAttribute('aria-selected', 'true')
+  await page.getByRole('menuitem', { name: '지난 RFP 비교' }).click()
+  await expect(page.getByRole('tab', { name: '지난 RFP 비교' })).toHaveAttribute('aria-selected', 'true')
 })
 
 test('아래 행동 줄로 한꺼번에 확정', async ({ page }) => {

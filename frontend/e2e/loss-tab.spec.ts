@@ -6,7 +6,7 @@ import { as, ENGINEER, lossRun, openTab, riskRun } from './helpers'
 async function openLoss(page: Page, runId: number) {
   await as(page, ENGINEER)
   await page.goto(`/#/reviews/${runId}`)
-  await openTab(page, '손실 환산 (참고)')
+  await openTab(page, '강점 제안')
   return page.locator('#loss table.mini tbody tr')
 }
 
@@ -48,11 +48,11 @@ test('조항 없는 RFP', async ({ page }) => {
   await expect(page.locator('#loss table.mini')).toHaveCount(0)
 })
 
-test('견적 협조 요청 단추는 입찰 영향 탭으로 옮긴다', async ({ page }) => {
+test('견적 협조 요청 단추는 같은 탭의 강점 제안으로 옮긴다', async ({ page }) => {
   const run = await riskRun(page.request, `협조 요청 링크 ${Date.now()}`)
   await openLoss(page, run.run_id)
   await page.getByRole('button', { name: '견적 담당에 협조 요청' }).click()
-  await expect(page.getByRole('tab', { name: '입찰 영향' })).toHaveAttribute('aria-selected', 'true')
+  await expect(page.getByRole('tab', { name: /^강점 제안/ })).toHaveAttribute('aria-selected', 'true')
 })
 
 // 명세 review-workspace "손실 환산 탭" (change update-loss-tab-group). 합성 데이터시트는 단가 표가 하나라

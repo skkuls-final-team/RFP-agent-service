@@ -90,7 +90,7 @@ export const judgmentRun = (request: APIRequestContext, name: string) => upload(
 
 /** 검토 상세 탭 열기. 손실 환산·입찰 영향·지난 RFP 비교·제출본은 "더 보기" 안에 있다 (update-detail-header) */
 export async function openTab(page: Page, name: string) {
-  if (['손실 환산 (참고)', '입찰 영향', '지난 RFP 비교', '제출본'].includes(name)) {
+  if (['지난 RFP 비교', '제출본'].includes(name)) {
     await page.getByRole('button', { name: '더 보기' }).click()
     await page.getByRole('menuitem', { name }).click()
   } else {

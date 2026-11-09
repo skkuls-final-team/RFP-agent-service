@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { api, type Judgment, type Proposal, type RunSummary } from '../../api'
 import { itemName, locShort } from '../../components/judgment'
 import { POINT_KIND_NAMES, STATUS_NAMES } from '../../components/labels'
 import { useLoad } from '../../components/useLoad'
 import { useSession } from '../../shell/useSession'
 
-// SCR-08-5 입찰 영향 탭 (목업 v4.57 Detail #bid). docs/screens/SCR-08-5-입찰영향.md
-// 유리한 점은 제안 포인트(FR-14·15), 불리한 점은 일탈 후보·질의 후보 판정. 채택한 포인트만 영업·견적에 전달된다(AR-08).
+// SCR-08-5 강점 제안 탭 (예전 이름: 입찰 영향) (목업 v4.57 Detail #bid). docs/screens/SCR-08-5-입찰영향.md
+// 강점 제안(제안 포인트, FR-14·15)을 맨 위에, 손실 환산(children)을 그 아래, 보완이 필요한 점은 일탈 후보·질의 후보 판정을 접어서 맨 아래에 둔다. 채택한 포인트만 영업·견적에 전달된다(AR-08).
 
 const TONES: Record<string, string> = { CANDIDATE: 'st c-grey', ADOPTED: 'st c-green', EDITED: 'st c-green', DISCARDED: 'st c-grey' }
 // 불리한 점의 대응 문장 (목업 cons)
@@ -20,7 +20,9 @@ const CONS: Record<string, [string, string]> = {
   QUERY_CANDIDATE: [' 값 불명확', '서면 질의로 적용 값을 확인한 뒤 판정'],
 }
 
-export function BidTab({ run, tick, onChanged }: { run: RunSummary; tick: number; onChanged: () => void }) {
+export function BidTab({ run, tick, onChanged, onGoJudge, children }: {
+  run: RunSummary; tick: number; onChanged: () => void; onGoJudge: () => void; children?: ReactNode
+}) {
   const { user } = useSession()
   const id = run.run_id
   const points = useLoad(() => api.proposals(id), [id, tick])
@@ -32,35 +34,39 @@ export function BidTab({ run, tick, onChanged }: { run: RunSummary; tick: number
   const tip = '설명 문장은 AI가 작성합니다. 채택한 항목만 영업과 견적 담당에 협조 요청으로 보냅니다.'
   const [acted, setActed] = useState<Record<number, Acted>>({})
 
+  const consN = cons.data?.length ?? 0
   return (
+    <>
     <section className="sec" id="bid">
-      <div className="sech"><h2>입찰 영향<span className="hint" tabIndex={0} role="img" aria-label={tip} title={tip}><span className="ms" aria-hidden="true">info</span></span></h2></div>
-      <div className="cols">
-        <div>
-          <div style={{ fontWeight: 600, fontSize: 'var(--fs-sm)', color: 'var(--c-green)', paddingBottom: 4 }}>유리한 점</div>
-          {points.error && <p role="alert">{points.error}</p>}
-          {points.data?.length === 0 && <p style={{ color: 'var(--c-muted)', margin: '10px 0' }}>내세울 강점 후보가 없습니다.</p>}
-          {points.data?.map((p) => <Point key={p.point_id} runId={id} p={p} canEdit={canEdit} lock={lock} acted={acted[p.point_id]}
-            onDone={(a) => { setActed((m) => ({ ...m, [p.point_id]: a })); onChanged() }}
-            where={locShort(p, docs.data ?? [])} />)}
-        </div>
-        <div>
-          <div style={{ fontWeight: 600, fontSize: 'var(--fs-sm)', color: 'var(--c-red)', paddingBottom: 4 }}>불리한 점</div>
-          {cons.error && <p role="alert">{cons.error}</p>}
-          {cons.data?.map((j: Judgment) => (
-            <div key={j.judgment_id} className="li">
-              <span className="ms c-red" aria-hidden="true">trending_down</span>
-              <div style={{ flex: '1 1 auto', minWidth: 0 }}>
-                <b style={{ fontWeight: 600 }}>{itemName(j)}{CONS[j.result][0]}</b>
-                <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--c-text-3)', marginTop: 2 }}>대응: {CONS[j.result][1]}</div>
-                <div className="en">{locShort(j, docs.data ?? [])}</div>
-              </div>
-            </div>
-          ))}
-          {cons.data?.length === 0 && <p style={{ color: 'var(--c-muted)', margin: '10px 0' }}>불리한 점이 없습니다.</p>}
-        </div>
-      </div>
+      <div className="sech"><h2>강점 제안<span className="hint" tabIndex={0} role="img" aria-label={tip} title={tip}><span className="ms" aria-hidden="true">info</span></span>
+        <span className="note">RFP 요구값보다 우리 제품이 앞서는 지점을 원문 근거와 함께 보여 줍니다</span></h2></div>
+      {points.error && <p role="alert">{points.error}</p>}
+      {points.data?.length === 0 && <p style={{ color: 'var(--c-muted)', margin: '10px 0' }}>내세울 강점 후보가 없습니다.</p>}
+      {points.data?.map((p) => <Point key={p.point_id} runId={id} p={p} canEdit={canEdit} lock={lock} acted={acted[p.point_id]}
+        onDone={(a) => { setActed((m) => ({ ...m, [p.point_id]: a })); onChanged() }}
+        where={locShort(p, docs.data ?? [])} />)}
     </section>
+    {children}
+    <section className="sec" id="bid-cons">
+      <details>
+        <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--c-red)' }}>
+          보완이 필요한 점 (일탈·질의 {consN}건)</summary>
+        {cons.error && <p role="alert">{cons.error}</p>}
+        {cons.data?.map((j: Judgment) => (
+          <div key={j.judgment_id} className="li">
+            <span className="ms c-red" aria-hidden="true">trending_down</span>
+            <div style={{ flex: '1 1 auto', minWidth: 0 }}>
+              <b style={{ fontWeight: 600 }}>{itemName(j)}{CONS[j.result][0]}</b>
+              <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--c-text-3)', marginTop: 2 }}>대응: {CONS[j.result][1]}</div>
+              <div className="en">{locShort(j, docs.data ?? [])}</div>
+            </div>
+          </div>
+        ))}
+        {consN === 0 && !cons.error && <p style={{ color: 'var(--c-muted)', margin: '10px 0' }}>보완이 필요한 점이 없습니다.</p>}
+        <button type="button" className="lnk" onClick={onGoJudge}>자세히는 판정 탭에서 보기 →</button>
+      </details>
+    </section>
+    </>
   )
 }
 

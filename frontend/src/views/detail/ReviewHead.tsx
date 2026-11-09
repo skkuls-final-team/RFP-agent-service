@@ -123,6 +123,10 @@ export function InfoBox({ run, docs, approver, head, onDocs, onTab, onComply, co
               <span className="l">작성할 칸</span><b className={head?.emptyCells ? 'c-blue' : undefined}>{head?.emptyCells ?? none}<small>칸</small></b>
               <span className="s">{head ? `${head.cells}칸 중 빈칸` : ''}</span>
             </a>
+            <button type="button" onClick={() => onTab('bid')} title="경쟁사와 차별화할 기술 강점 (성능 여유·손실 환산)">
+              <span className="l">강점 제안</span><b className={head?.strengths ? 'c-green' : undefined}>{head?.strengths ?? none}<small>건</small></b>
+              <span className="s">성능 여유 · 손실 환산</span>
+            </button>
             {head?.loss != null && (
               <button type="button" onClick={() => onTab('loss')}>
                 <span className="l">손실 환산</span><b>{head.loss}</b><span className="s">참고값</span>

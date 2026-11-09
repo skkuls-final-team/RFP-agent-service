@@ -73,7 +73,7 @@ test('파일 1을 올려 판정·손실 환산까지', async ({ page }) => {
   await expect(seg.locator('button[aria-pressed="true"]')).toHaveText('GIS-145-40')  // 지금 비교 제품, 누르면 바꿔 본다
 
   // Scenario: 손실 환산 결과 — 계산식(단가 × 손실값), 합계, 팀 가정
-  await openTab(page, '손실 환산 (참고)')                                  // v4.96: "더 보기" 안
+  await openTab(page, '강점 제안')                                  // 손실 환산은 강점 제안 탭 안
   const table = page.locator('#loss table.mini').first()
   const loss = table.locator('tbody tr')
   await expect(loss.nth(0)).toContainText('4,500 $/kW ×')
