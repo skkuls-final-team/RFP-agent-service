@@ -1,70 +1,70 @@
-번호,text,expected,value,unit,note
-1,"The Procuring Entity requests proposals for the supply and technical validation of electrical equipment. Each bidder shall identify eligible products, state compliance with every mandatory requirement, provide objective evidence, and complete the product-response and evaluation columns in the companion Excel workbook.",REQUIREMENT,,,1장 입찰자 의무
-2,"The product master is a procurement baseline, not a bidder's self-declaration and not evidence of compliance. Where a comparison value is marked as assumed, it must be replaced with verified manufacturer data in the bidder response.",REQUIREMENT,,,1장 가정값 바꿔 쓰기 의무
-3,Completed Excel response matrix for every offered product and product-family requirement.,REQUIREMENT,,,2장 필수 제출물
-4,Manufacturer product datasheet and a complete bill of materials for every offered item.,REQUIREMENT,,,2장 필수 제출물
-5,"Applicable IEC/ANSI/UL standards, declarations, certificates, and test reports.",REQUIREMENT,,,2장 필수 제출물
-6,"Clause-by-clause compliance statement; “Comply”, “Exception”, or “Not applicable” is required.",REQUIREMENT,,,2장 필수 제출물
-7,"Commercial proposal showing unit price, quantity, delivery term, warranty, and validity period.",REQUIREMENT,,,2장 필수 제출물
-8,"Manufacturer authorization, production facility information, after-sales organization, and technical support plan.",REQUIREMENT,,,2장 필수 제출물
-9,"Factory acceptance, type/routine test plan, packing, inspection, delivery, and commissioning approach.",REQUIREMENT,,,2장 필수 제출물
-10,"Evidence for maintenance interval, service life, warranty, spare parts, and lifecycle support.",REQUIREMENT,,,2장 필수 제출물
-11,The bidder shall complete one response row per offered product. A numeric or text response without a cited source is not accepted as evidence.,REQUIREMENT,,,4장
-12,"Product code, name, family, description, and product datasheet",REQUIREMENT,,,4장 응답 요구 표 T1 Product identity (가장 긴 칸)
-13,"Rated voltage, rated current, and short-circuit capability with applicable unit",REQUIREMENT,,,4장 응답 요구 표 T2 Electrical rating (가장 긴 칸)
-14,Current applicable standards and independently verifiable certificates,REQUIREMENT,,,4장 응답 요구 표 T3 Standards and certifications (가장 긴 칸)
-15,"Lightning impulse, power-frequency withstand, and switching impulse as applicable",REQUIREMENT,,,4장 응답 요구 표 T4 Dielectric performance (가장 긴 칸)
-16,"Peak/making current, breaking/closing time, and applicable interrupting evidence",REQUIREMENT,,,4장 응답 요구 표 T5 Switching duty (가장 긴 칸)
-17,"Insulation medium, cooling, gas leakage (if GIS), and partial discharge",REQUIREMENT,,,4장 응답 요구 표 T6 Insulation and leakage (가장 긴 칸)
-18,"Maintenance interval, service life, lifecycle status, warranty, and spares plan",REQUIREMENT,,,4장 응답 요구 표 T7 Lifecycle support (가장 긴 칸)
-19,"Weight, dimensions, MOQ, lead time, packing, shipping, and delivery capability",REQUIREMENT,,,4장 응답 요구 표 T8 Supply and logistics (가장 긴 칸)
-20,"List/offer price basis, currency, validity, payment and delivery terms",REQUIREMENT,,,4장 응답 요구 표 T9 Commercials (가장 긴 칸)
-21,"Operating temperature, IP rating and installation limits supported by evidence",REQUIREMENT,,,4장 응답 요구 표 T10 Environmental/operating limits (가장 긴 칸)
-22,1 / Rated voltage / kV / ≥170 kV,REQUIREMENT,170,kV,4.2 TS-170-GIS 1 (칸을 ' / '로 이은 표 줄)
-23,2 / Rated continuous current / A / ≥3150 A,REQUIREMENT,3150,A,4.2 TS-170-GIS 2 (칸을 ' / '로 이은 표 줄)
-24,3 / Rated short-time withstand current / kA / ≥50 kA,REQUIREMENT,50,kA,4.2 TS-170-GIS 3 (칸을 ' / '로 이은 표 줄)
-25,4 / Rated lightning impulse withstand voltage / kV / ≥750 kV,REQUIREMENT,750,kV,4.2 TS-170-GIS 4 (칸을 ' / '로 이은 표 줄)
-26,5 / Rated short-duration power-frequency withstand voltage / kV / ≥395 kV,REQUIREMENT,395,kV,4.2 TS-170-GIS 5 (칸을 ' / '로 이은 표 줄)
-27,6 / Rated short-circuit making current / kA / ≥125 kA,REQUIREMENT,125,kA,4.2 TS-170-GIS 6 (칸을 ' / '로 이은 표 줄)
-28,7 / Total Breaking Time / ms / ≤60 ms,REQUIREMENT,60,ms,4.2 TS-170-GIS 7 (칸을 ' / '로 이은 표 줄)
-29,8 / Annual leakage rate for each gas compartment / % / ≤0.5 %,REQUIREMENT,0.5,%,4.2 TS-170-GIS 8 (칸을 ' / '로 이은 표 줄)
-30,9 / Partial discharge / pC / ≤5 pC,REQUIREMENT,5,pC,4.2 TS-170-GIS 9 (칸을 ' / '로 이은 표 줄)
-31,10 / Maintenance period / months / ≥12 months,REQUIREMENT,12,months,4.2 TS-170-GIS 10 (칸을 ' / '로 이은 표 줄)
-32,11 / Service life / years / ≥30 years,REQUIREMENT,30,years,4.2 TS-170-GIS 11 (칸을 ' / '로 이은 표 줄)
-33,1 / Rated voltage / kV / ≥24 kV,REQUIREMENT,24,kV,4.3 TS-24-CB 1 (칸을 ' / '로 이은 표 줄)
-34,2 / Rated normal current / A / ≥2000 A,REQUIREMENT,2000,A,4.3 TS-24-CB 2 (칸을 ' / '로 이은 표 줄)
-35,3 / Rated short-circuit breaking current / kA / ≥40 kA,REQUIREMENT,40,kA,4.3 TS-24-CB 3 (칸을 ' / '로 이은 표 줄)
-36,4 / Rated lightning impulse withstand voltage / kV / ≥125 kV,REQUIREMENT,125,kV,4.3 TS-24-CB 4 (칸을 ' / '로 이은 표 줄)
-37,5 / Rated short-duration power-frequency withstand voltage / kV / ≥50 kV,REQUIREMENT,50,kV,4.3 TS-24-CB 5 (칸을 ' / '로 이은 표 줄)
-38,6 / Rated short-circuit making current / kA / ≥100 kA,REQUIREMENT,100,kA,4.3 TS-24-CB 6 (칸을 ' / '로 이은 표 줄)
-39,7 / Total Breaking Time / ms / ≤60 ms,REQUIREMENT,60,ms,4.3 TS-24-CB 7 (칸을 ' / '로 이은 표 줄)
-40,D-01 / Rated voltage / kV / ≥180 kV,REQUIREMENT,180,kV,부록 B TS-170-GIS D-01 (칸을 ' / '로 이은 표 줄)
-41,D-02 / Rated continuous current / A / ≥4000 A,REQUIREMENT,4000,A,부록 B TS-170-GIS D-02 (칸을 ' / '로 이은 표 줄)
-42,D-03 / Rated short-time withstand current / kA / ≥60 kA,REQUIREMENT,60,kA,부록 B TS-170-GIS D-03 (칸을 ' / '로 이은 표 줄)
-43,D-04 / Rated lightning impulse withstand voltage / kV / ≥800 kV,REQUIREMENT,800,kV,부록 B TS-170-GIS D-04 (칸을 ' / '로 이은 표 줄)
-44,D-05 / Rated short-duration power-frequency withstand voltage / kV / ≥420 kV,REQUIREMENT,420,kV,부록 B TS-170-GIS D-05 (칸을 ' / '로 이은 표 줄)
-45,D-06 / Rated short-circuit making current / kA / ≥130 kA,REQUIREMENT,130,kA,부록 B TS-170-GIS D-06 (칸을 ' / '로 이은 표 줄)
-46,D-07 / Total breaking time / ms / ≤55 ms,REQUIREMENT,55,ms,부록 B TS-170-GIS D-07 (칸을 ' / '로 이은 표 줄)
-47,D-08 / Annual leakage rate for each gas compartment / % / ≤0.4 %,REQUIREMENT,0.4,%,부록 B TS-170-GIS D-08 (칸을 ' / '로 이은 표 줄)
-48,D-09 / Partial discharge / pC / ≤3 pC,REQUIREMENT,3,pC,부록 B TS-170-GIS D-09 (칸을 ' / '로 이은 표 줄)
-49,D-10 / Maintenance period / months / ≥24 months,REQUIREMENT,24,months,부록 B TS-170-GIS D-10 (칸을 ' / '로 이은 표 줄)
-50,D-11 / Service life / years / ≥35 years,REQUIREMENT,35,years,부록 B TS-170-GIS D-11 (칸을 ' / '로 이은 표 줄)
-51,"Product-master records marked comparison_values_assumed=Y contain demonstration or synthesized comparison values. These values shall not be treated as guarantees, test results, catalog ratings, or contractual requirements. The bidder must verify, replace, or reject every applicable assumed value with manufacturer documentation.",REQUIREMENT,,,6장 가정값 확인 의무
-52,"The evaluated price shall include transportation, insurance, installation supervision and commissioning for each offered GIS bay.",REQUIREMENT,,,8.1 협조 요청 항목
-53,The bidder shall submit a separately priced list of recommended spare parts for five (5) years of operation.,REQUIREMENT,,,8.1 협조 요청 항목
-54,"The evaluated price shall state the currency, price validity period and payment milestones for the complete scope of supply.",REQUIREMENT,,,8.1 협조 요청 항목
-55,Type Test reports issued by an independent accredited laboratory shall be submitted for the offered GIS.,REQUIREMENT,,,8.2 협조 요청 항목
-56,Routine Test shall be performed on every GIS bay at the factory and shall be witnessed by the Procuring Entity.,REQUIREMENT,,,8.2 협조 요청 항목
-57,The bidder shall submit the factory test report and the inspection and test plan at least four (4) weeks before shipment.,REQUIREMENT,,,8.2 협조 요청 항목
-58,The manufacturer shall hold a valid ISO 9001 certificate for the production facility of the offered equipment.,REQUIREMENT,,,8.3 협조 요청 항목
-59,The bidder shall have at least ten (10) years of experience in manufacturing and supplying gas-insulated switchgear.,REQUIREMENT,,,8.3 협조 요청 항목
-60,An authorization letter from the manufacturer shall be submitted with the proposal.,REQUIREMENT,,,8.3 협조 요청 항목
-61,Any deviation that is not listed in the bidder's deviation schedule shall be deemed to be accepted by the bidder.,REQUIREMENT,,,9.1 계약·공급 범위 조항
-62,No deviations from the technical requirements will be accepted after contract award.,REQUIREMENT,,,9.1 계약·공급 범위 조항
-63,"The scope of supply shall cover all accessories required for safe operation, including but not limited to special tools, earthing devices and gas handling equipment.",REQUIREMENT,,,9.2 계약·공급 범위 조항
-64,Any item that is not explicitly mentioned but is necessary for the complete installation shall be supplied at no extra cost to the Procuring Entity.,REQUIREMENT,,,9.2 계약·공급 범위 조항
-65,The annual gas leakage rate of each gas compartment of the GIS shall not exceed 0.5 %.,REQUIREMENT,0.5,%,9.3 기술 확인 조항
-66,Any deviation that is not listed in the bidder's deviation schedule shall be deemed to be accepted by the bidder.,BLANKET,,,포괄 조항(deemed)
-67,No deviations from the technical requirements will be accepted after contract award.,BLANKET,,,포괄 조항(no deviations)
-68,"The scope of supply shall cover all accessories required for safe operation, including but not limited to special tools, earthing devices and gas handling equipment.",OPEN_SCOPE,,,범위 모호(including but not limited to). 같은 절 'at no extra cost'는 비용 전가라 정답 종류에 없음
-69,The annual gas leakage rate of each gas compartment of the GIS shall not exceed 0.5 %.,VALUE_MISMATCH,,,문장 0.5 % ↔ 부록 B 데이터시트 0.4 %
+번호,text,expected,value,unit,note,판정,변경여부,변경항목,검수근거,만든 이
+1,"The Procuring Entity requests proposals for the supply and technical validation of electrical equipment. Each bidder shall identify eligible products, state compliance with every mandatory requirement, provide objective evidence, and complete the product-response and evaluation columns in the companion Excel workbook.",REQUIREMENT,,,1장 입찰자 의무,유지,N,,1. Procurement Objective | 원문 문장 및 분류 일치.,최민정
+2,"The product master is a procurement baseline, not a bidder's self-declaration and not evidence of compliance. Where a comparison value is marked as assumed, it must be replaced with verified manufacturer data in the bidder response.",REQUIREMENT,,,1장 가정값 바꿔 쓰기 의무,유지,N,,1. Procurement Objective | 원문 문장 및 분류 일치.,최민정
+3,Completed Excel response matrix for every offered product and product-family requirement.,REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+4,Manufacturer product datasheet and a complete bill of materials for every offered item.,REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+5,"Applicable IEC/ANSI/UL standards, declarations, certificates, and test reports.",REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+6,"Clause-by-clause compliance statement; “Comply”, “Exception”, or “Not applicable” is required.",REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+7,"Commercial proposal showing unit price, quantity, delivery term, warranty, and validity period.",REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+8,"Manufacturer authorization, production facility information, after-sales organization, and technical support plan.",REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+9,"Factory acceptance, type/routine test plan, packing, inspection, delivery, and commissioning approach.",REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+10,"Evidence for maintenance interval, service life, warranty, spare parts, and lifecycle support.",REQUIREMENT,,,2장 필수 제출물,유지,N,,2. Mandatory Proposal Submission | 원문 문장 및 분류 일치.,최민정
+11,The bidder shall complete one response row per offered product. A numeric or text response without a cited source is not accepted as evidence.,REQUIREMENT,,,4장,유지,N,,4. Technical Requirements and Evidence | 원문 문장 및 분류 일치.,최민정
+12,"Product code, name, family, description, and product datasheet",REQUIREMENT,,,4장 응답 요구 표 T1 Product identity (가장 긴 칸),유지,N,,4장 T1 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+13,"Rated voltage, rated current, and short-circuit capability with applicable unit",REQUIREMENT,,,4장 응답 요구 표 T2 Electrical rating (가장 긴 칸),유지,N,,4장 T2 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+14,Current applicable standards and independently verifiable certificates,REQUIREMENT,,,4장 응답 요구 표 T3 Standards and certifications (가장 긴 칸),유지,N,,4장 T3 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+15,"Lightning impulse, power-frequency withstand, and switching impulse as applicable",REQUIREMENT,,,4장 응답 요구 표 T4 Dielectric performance (가장 긴 칸),유지,N,,4장 T4 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+16,"Peak/making current, breaking/closing time, and applicable interrupting evidence",REQUIREMENT,,,4장 응답 요구 표 T5 Switching duty (가장 긴 칸),유지,N,,4장 T5 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+17,"Insulation medium, cooling, gas leakage (if GIS), and partial discharge",REQUIREMENT,,,4장 응답 요구 표 T6 Insulation and leakage (가장 긴 칸),유지,N,,4장 T6 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+18,"Maintenance interval, service life, lifecycle status, warranty, and spares plan",REQUIREMENT,,,4장 응답 요구 표 T7 Lifecycle support (가장 긴 칸),유지,N,,4장 T7 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+19,"Weight, dimensions, MOQ, lead time, packing, shipping, and delivery capability",REQUIREMENT,,,4장 응답 요구 표 T8 Supply and logistics (가장 긴 칸),유지,N,,4장 T8 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+20,"List/offer price basis, currency, validity, payment and delivery terms",REQUIREMENT,,,4장 응답 요구 표 T9 Commercials (가장 긴 칸),유지,N,,4장 T9 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+21,"Operating temperature, IP rating and installation limits supported by evidence",REQUIREMENT,,,4장 응답 요구 표 T10 Environmental/operating limits (가장 긴 칸),유지,N,,4장 T10 (응답 요구 표) | 원문 문장 및 분류 일치.,최민정
+22,1 / Rated voltage / kV / ≥170 kV,REQUIREMENT,170,kV,4.2 TS-170-GIS 1 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 1 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+23,2 / Rated continuous current / A / ≥3150 A,REQUIREMENT,3150,A,4.2 TS-170-GIS 2 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 2 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+24,3 / Rated short-time withstand current / kA / ≥50 kA,REQUIREMENT,50,kA,4.2 TS-170-GIS 3 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 3 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+25,4 / Rated lightning impulse withstand voltage / kV / ≥750 kV,REQUIREMENT,750,kV,4.2 TS-170-GIS 4 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 4 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+26,5 / Rated short-duration power-frequency withstand voltage / kV / ≥395 kV,REQUIREMENT,395,kV,4.2 TS-170-GIS 5 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 5 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+27,6 / Rated short-circuit making current / kA / ≥125 kA,REQUIREMENT,125,kA,4.2 TS-170-GIS 6 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 6 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+28,7 / Total Breaking Time / ms / ≤60 ms,REQUIREMENT,60,ms,4.2 TS-170-GIS 7 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 7 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+29,8 / Annual leakage rate for each gas compartment / % / ≤0.5 %,REQUIREMENT,0.5,%,4.2 TS-170-GIS 8 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 8 | 원문 수치 유지. 4.2/9.3 ≤0.5%와 부록 B D-08 ≤0.4% 차이 확인.,최민정
+30,9 / Partial discharge / pC / ≤5 pC,REQUIREMENT,5,pC,4.2 TS-170-GIS 9 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 9 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+31,10 / Maintenance period / months / ≥12 months,REQUIREMENT,12,months,4.2 TS-170-GIS 10 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 10 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+32,11 / Service life / years / ≥30 years,REQUIREMENT,30,years,4.2 TS-170-GIS 11 (칸을 ' / '로 이은 표 줄),유지,N,,4.2 TS-170-GIS 11 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+33,1 / Rated voltage / kV / ≥24 kV,REQUIREMENT,24,kV,4.3 TS-24-CB 1 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 1 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+34,2 / Rated normal current / A / ≥2000 A,REQUIREMENT,2000,A,4.3 TS-24-CB 2 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 2 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+35,3 / Rated short-circuit breaking current / kA / ≥40 kA,REQUIREMENT,40,kA,4.3 TS-24-CB 3 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 3 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+36,4 / Rated lightning impulse withstand voltage / kV / ≥125 kV,REQUIREMENT,125,kV,4.3 TS-24-CB 4 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 4 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+37,5 / Rated short-duration power-frequency withstand voltage / kV / ≥50 kV,REQUIREMENT,50,kV,4.3 TS-24-CB 5 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 5 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+38,6 / Rated short-circuit making current / kA / ≥100 kA,REQUIREMENT,100,kA,4.3 TS-24-CB 6 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 6 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+39,7 / Total Breaking Time / ms / ≤60 ms,REQUIREMENT,60,ms,4.3 TS-24-CB 7 (칸을 ' / '로 이은 표 줄),유지,N,,4.3 TS-24-CB 7 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+40,D-01 / Rated voltage / kV / ≥180 kV,REQUIREMENT,180,kV,부록 B TS-170-GIS D-01 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-01 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+41,D-02 / Rated continuous current / A / ≥4000 A,REQUIREMENT,4000,A,부록 B TS-170-GIS D-02 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-02 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+42,D-03 / Rated short-time withstand current / kA / ≥60 kA,REQUIREMENT,60,kA,부록 B TS-170-GIS D-03 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-03 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+43,D-04 / Rated lightning impulse withstand voltage / kV / ≥800 kV,REQUIREMENT,800,kV,부록 B TS-170-GIS D-04 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-04 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+44,D-05 / Rated short-duration power-frequency withstand voltage / kV / ≥420 kV,REQUIREMENT,420,kV,부록 B TS-170-GIS D-05 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-05 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+45,D-06 / Rated short-circuit making current / kA / ≥130 kA,REQUIREMENT,130,kA,부록 B TS-170-GIS D-06 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-06 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+46,D-07 / Total breaking time / ms / ≤55 ms,REQUIREMENT,55,ms,부록 B TS-170-GIS D-07 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-07 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+47,D-08 / Annual leakage rate for each gas compartment / % / ≤0.4 %,REQUIREMENT,0.4,%,부록 B TS-170-GIS D-08 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-08 | 원문 수치 유지. 4.2/9.3 ≤0.5%와 부록 B D-08 ≤0.4% 차이 확인.,최민정
+48,D-09 / Partial discharge / pC / ≤3 pC,REQUIREMENT,3,pC,부록 B TS-170-GIS D-09 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-09 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+49,D-10 / Maintenance period / months / ≥24 months,REQUIREMENT,24,months,부록 B TS-170-GIS D-10 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-10 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+50,D-11 / Service life / years / ≥35 years,REQUIREMENT,35,years,부록 B TS-170-GIS D-11 (칸을 ' / '로 이은 표 줄),유지,N,,부록 B TS-170-GIS D-11 | 원문 표의 비교연산자·수치·단위 일치.,최민정
+51,"Product-master records marked comparison_values_assumed=Y contain demonstration or synthesized comparison values. These values shall not be treated as guarantees, test results, catalog ratings, or contractual requirements. The bidder must verify, replace, or reject every applicable assumed value with manufacturer documentation.",REQUIREMENT,,,6장 가정값 확인 의무,유지,N,,6. Assumed/Unverified Values | 원문 문장 및 분류 일치.,최민정
+52,"The evaluated price shall include transportation, insurance, installation supervision and commissioning for each offered GIS bay.",REQUIREMENT,,,8.1 협조 요청 항목,유지,N,,8.1 Quotation and Evaluated Price | 원문 문장 및 분류 일치.,최민정
+53,The bidder shall submit a separately priced list of recommended spare parts for five (5) years of operation.,REQUIREMENT,,,8.1 협조 요청 항목,유지,N,,8.1 Quotation and Evaluated Price | 원문 문장 및 분류 일치.,최민정
+54,"The evaluated price shall state the currency, price validity period and payment milestones for the complete scope of supply.",REQUIREMENT,,,8.1 협조 요청 항목,유지,N,,8.1 Quotation and Evaluated Price | 원문 문장 및 분류 일치.,최민정
+55,Type Test reports issued by an independent accredited laboratory shall be submitted for the offered GIS.,REQUIREMENT,,,8.2 협조 요청 항목,유지,N,,8.2 Testing and Quality Assurance | 원문 문장 및 분류 일치.,최민정
+56,Routine Test shall be performed on every GIS bay at the factory and shall be witnessed by the Procuring Entity.,REQUIREMENT,,,8.2 협조 요청 항목,유지,N,,8.2 Testing and Quality Assurance | 원문 문장 및 분류 일치.,최민정
+57,The bidder shall submit the factory test report and the inspection and test plan at least four (4) weeks before shipment.,REQUIREMENT,,,8.2 협조 요청 항목,유지,N,,8.2 Testing and Quality Assurance | 원문 문장 및 분류 일치.,최민정
+58,The manufacturer shall hold a valid ISO 9001 certificate for the production facility of the offered equipment.,REQUIREMENT,,,8.3 협조 요청 항목,유지,N,,8.3 Supplier Qualification | 원문 문장 및 분류 일치.,최민정
+59,The bidder shall have at least ten (10) years of experience in manufacturing and supplying gas-insulated switchgear.,REQUIREMENT,,,8.3 협조 요청 항목,유지,N,,8.3 Supplier Qualification | 원문 문장 및 분류 일치.,최민정
+60,An authorization letter from the manufacturer shall be submitted with the proposal.,REQUIREMENT,,,8.3 협조 요청 항목,유지,N,,8.3 Supplier Qualification | 원문 문장 및 분류 일치.,최민정
+61,Any deviation that is not listed in the bidder's deviation schedule shall be deemed to be accepted by the bidder.,REQUIREMENT,,,9.1 계약·공급 범위 조항,유지,N,,9.1 Deviations and Clarifications | 원문 문장 및 분류 일치.,최민정
+62,No deviations from the technical requirements will be accepted after contract award.,REQUIREMENT,,,9.1 계약·공급 범위 조항,유지,N,,9.1 Deviations and Clarifications | 원문 문장 및 분류 일치.,최민정
+63,"The scope of supply shall cover all accessories required for safe operation, including but not limited to special tools, earthing devices and gas handling equipment.",REQUIREMENT,,,9.2 계약·공급 범위 조항,유지,N,,9.2 Scope of Supply | 원문 문장 및 분류 일치.,최민정
+64,Any item that is not explicitly mentioned but is necessary for the complete installation shall be supplied at no extra cost to the Procuring Entity.,REQUIREMENT,,,9.2 계약·공급 범위 조항,유지,N,,9.2 Scope of Supply | 요구사항 일치. 미명시 필수 품목 무상 공급은 OPEN_SCOPE 후보이기도 하나 보조 라벨 정책 확인 필요.,최민정
+65,The annual gas leakage rate of each gas compartment of the GIS shall not exceed 0.5 %.,REQUIREMENT,0.5,%,9.3 기술 확인 조항,유지,N,,9.3 Technical Clarifications | 원문 수치 유지. 4.2/9.3 ≤0.5%와 부록 B D-08 ≤0.4% 차이 확인.,최민정
+66,Any deviation that is not listed in the bidder's deviation schedule shall be deemed to be accepted by the bidder.,BLANKET,,,포괄 조항(deemed),유지,N,,9.1 Deviations and Clarifications | 계약 리스크 보조 라벨: 포괄 조항(deemed),최민정
+67,No deviations from the technical requirements will be accepted after contract award.,BLANKET,,,포괄 조항(no deviations),유지,N,,9.1 Deviations and Clarifications | 계약 리스크 보조 라벨: 포괄 조항(no deviations),최민정
+68,"The scope of supply shall cover all accessories required for safe operation, including but not limited to special tools, earthing devices and gas handling equipment.",OPEN_SCOPE,,,범위 모호(including but not limited to). 같은 절 'at no extra cost'는 비용 전가라 정답 종류에 없음,유지,N,,9.2 Scope of Supply | 계약 리스크 보조 라벨: 범위 모호(including but not limited to). 같은 절 'at no extra cost'는 비용 전가라 정답 종류에 없음,최민정
+69,The annual gas leakage rate of each gas compartment of the GIS shall not exceed 0.5 %.,VALUE_MISMATCH,,,문장 0.5 % ↔ 부록 B 데이터시트 0.4 %,유지,N,,9.3 Technical Clarifications | 원문 수치 유지. 4.2/9.3 ≤0.5%와 부록 B D-08 ≤0.4% 차이 확인.,최민정
